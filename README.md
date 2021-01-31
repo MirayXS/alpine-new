@@ -9,7 +9,6 @@ npm i url
 npm i requests
 npm i child_process
 npm i discord.js
-npm i discord.js-selfbot | selfbot branch only
 npm i sharp
 npm i express
 npm i body-parser
