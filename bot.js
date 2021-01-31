@@ -1,4 +1,4 @@
-const discord = require("discord.js-selfbot")
+const discord = require("discord.js")
 const { exec, spawn } = require("child_process");
 const request = require("request");
 const fs = require("fs")
@@ -8,7 +8,6 @@ const bodyParser = require('body-parser')
 const url = require('url');
 const querystring = require('querystring');
 const sharp = require('sharp')
-
 
 /* Config */
 
@@ -27,8 +26,8 @@ function redraw() {
     console.log("██╔══██║██║     ██╔═══╝ ██║██║╚██╗██║██╔══╝  ");
     console.log("██║  ██║███████╗██║     ██║██║ ╚████║███████╗");
     console.log("╚═╝  ╚═╝╚══════╝╚═╝     ╚═╝╚═╝  ╚═══╝╚══════╝");
-    console.log("Alpine Selfbot dashboard now running. Dashboard: https://localhost:4000\nYour key for the dashboard is: "+apikey)
-    console.log("Dashboard Endpoints:\nhttp://localhost:4000/panel?key="+apikey+"\nhttp://localhost:4000/send?key="+apikey+"&m=hello%20world&id=channel\nhttp://localhost:4000/auth?key="+apikey+"\nhttp://localhost:4000/eval?key="+apikey+"&code=console.log('a')\nhttp://localhost:4000/guilds?key="+apikey+"\nhttp://localhost:4000/guilds?key="+apikey+"&inv=serverid\n\nMade by Agent#9895")
+    console.log("Alpine Bot dashboard now running. Dashboard: https://localhost:4100\nYour key for the dashboard is: "+apikey)
+    console.log("Dashboard Endpoints:\nhttp://localhost:4100/panel?key="+apikey+"\nhttp://localhost:4100/send?key="+apikey+"&m=hello%20world&id=channel\nhttp://localhost:4100/auth?key="+apikey+"\nhttp://localhost:4100/eval?key="+apikey+"&code=console.log('a')\nhttp://localhost:4100/guilds?key="+apikey+"\nhttp://localhost:4100/guilds?key="+apikey+"&inv=serverid\n\nMade by Agent#9895")
     return("drew console")
 }
 function clean(text) {
@@ -180,11 +179,10 @@ app.get("/eval", function(req, res) {
 
     }
 })
-app.listen(4000, function(err) {
+app.listen(4100, function(err) {
     if (err) console.log(err);
-    console.log("Dashboard Started! http://localhost:4000");
+    console.log("Dashboard Started! http://localhost:4100");
 });
-
 
 
 async function download(url, name){
@@ -212,7 +210,6 @@ async function download(url, name){
         .on('error', console.error)
         .pipe(fs.createWriteStream(name));
 }
-
 function sleep(ms) {
     return new Promise((resolve) => {
       setTimeout(resolve, ms);
@@ -257,7 +254,6 @@ redraw();
 client.on("message", async m => {
     if (m.content.startsWith(prefix)) {
     console.log(m.guild.name+" "+m.channel.id)
-    if (m.author.id != client.user.id) {console.log("not agent");} else{
 
     
     if (m.content.substr(0,1) == prefix) {
@@ -274,7 +270,7 @@ client.on("message", async m => {
               },
               {
                 "name": "Commands:",
-                "value": "```html\n- crash <video>\n- virus <img>\n- ban <user> \n- kick <user>\n- eval <code>\n```"
+                "value": "```html\n- crash <video>\n- virus <img>\n- ban <user>```"
               }
             ],
             "author": {
@@ -290,23 +286,9 @@ client.on("message", async m => {
       
       console.log("Command Found: help")
      var a = await m.channel.send({embed: help})
-     await sleep(3000)
-     m.delete()
-     a.delete()
+
     }
-    if (m.content.substr(1,4) == "eval") {
-        try {
-            const code = args.join(" ");
-            let evaled = eval(code);
-    
-           if (typeof evaled !== "string")
-             evaled = require("util").inspect(evaled);
-    
-             m.channel.send(clean(evaled), {code:"xl"});
-           } catch (err) {
-           m.channel.send(`\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``);
-        }
-    }
+
     if (m.content.substr(1,3)=="ban") {
         if (m.member.hasPermission("BAN_MEMBERS")) {
 
@@ -337,7 +319,7 @@ client.on("message", async m => {
     crashv();
      await sleep(9000)
      old.channel.send({files:["crasher.mp4"]})
-     m.delete()
+   redraw()
    }
    if (m.content.substr(1,5)=="virus") {
     m.reply("creating virus image x3")
@@ -366,13 +348,12 @@ client.on("message", async m => {
         })
        });
 
-   }
+   } // end virus cmd
  }}
-}
-sleep(300)
-redraw()
+
+
 })
 
 
 
-client.login("mfa.75DVRW3Dinl_lGTY9OGdxh4dLc7F_lFuzYmv5YrTVAwSiL6xGgZ2cjCzQrasd6ew6MSFqta5qGuDZzS9TVpj")
+client.login("token")
